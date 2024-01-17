@@ -42,7 +42,7 @@ export default function App() {
   };
 
   const cancelOrder = (orderToCancel) => {
-    if (orderToCancel.stage < 3) {
+    if (orderToCancel.stage !== 3) {                       
       // Clear the timer associated with the canceled order
       clearInterval(orderTimers[orderToCancel.id]);
 
@@ -59,7 +59,8 @@ export default function App() {
 
   const placeOrder = (details) => {
     if (orders.length < 10) {
-      const orderId = generateID();
+      let orderId = generateID();
+      orders.filter(order=> order.id == orderId).length !== 0 ? orderId = generateID() : orderId 
       setOrders([
         ...orders,
         { ...details, id: orderId, stage: 1, time: Date.now() },
@@ -89,7 +90,7 @@ export default function App() {
 
   return (
     <>
-      <button>Order Pizza</button>
+      
       <PizzaForm orders={orders} placeOrder={placeOrder} />
       <Admin orders={orders} nextStage={nextStage} cancelOrder={cancelOrder} />
     </>
